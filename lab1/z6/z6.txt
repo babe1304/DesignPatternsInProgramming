@@ -1,0 +1,11 @@
+Prilikom instanciranja Derived klase, prvotno se igradi objekt klase Base te tablice virtualnih 
+metoda pokazuju na funkcije definirane pod klasom Base. Prvo se poziva konstruktor klase Base unutar
+kojeg se poziva metoda() koja poziva virtualnu metodu čiji pokazivač u trenutku pokazuje na tablicu
+virtualnih funkcija klase Base. Zato je prvi ispis: "Metoda kaze: ja sam bazna implementacija!".
+
+Potom se poziva konstruktor klase Derived unutar kojeg se isto poziva metoda() koja ponovno poziva
+virtualnu funkciju, no u ovom trenutku pokazivač pokazuje na tablicu virtualnih funkcija klase
+Derived. Stoga je drugi ispis: "Metoda kaze: ja sam izvedena implementacija!".
+
+Nakon toga pokazivač tablica virtualnih funkcija pokazuje na onaj od klase Derived, tako da ponovni
+poziv virtualne funkcije ispisuje isti tekst kao i prošli poziv.

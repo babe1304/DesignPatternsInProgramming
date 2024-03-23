@@ -1,0 +1,34 @@
+Za objekt *pb se memorija alocira naredbom sub	rsp, 24
+gdje se rezervira 24B na stogu za lokalne varijable maina.
+Potom se poziva funkcija new (_Znwm) kojoj se kao argument pridaje
+16 byteova kako bi se na gomili zauzelo 16B memorije za objekt klase CoolClass.
+Nakon toga se poziva funkcija call	_ZN9CoolClassC1Ev kojom se na rezervirano
+mjesto inicijalizira objekt klase CoolClass.
+Potom se na rezervirano mjesto na stogu postavlja pokazivač *pb.
+
+Objekt poc je spremljen na stogu i preko naredbe lea rax, [rbp-28] se računa
+prostor potreban na stogu za spremanje objekta poc. Ne postoji definirana funkcija
+konstruktora objekta poc niti njen poziv.
+
+Poziv funkcije pb->set(42) zahtjeva poziv više instrukcija u asemblerskom
+kodu jer zahtjeva dohvaćanje objekta s gomile i potom dohvaćanje funkcije
+objekta te nakon toga i poziv funkcije na toj lokaciji, dok poziv funkcije
+p.set(42) direktno poziva definiranu definiranu funkciju _ZN13PlainOldClass3setEi.
+Za obje verzije se može postići inlining, no to opet ovisi o raznim faktorima.
+
+#Poziv pb->set(42)
+mov rax, QWORD PTR [rbp-24]    
+mov rax, QWORD PTR [rax]       
+mov rdx, QWORD PTR [rax]       
+mov rax, QWORD PTR [rbp-24]    
+mov esi, 42                    
+mov rdi, rax                   
+call rdx   
+
+#Poziv p.set(42)
+lea rax, [rbp-28]
+mov esi, 42 
+mov rdi, rax
+call _ZN13PlainOldClass3setEi
+
+Asemblerski kod za inicijalizaciju tablica virtualnih funkcija je  mov	edx, OFFSET FLAT:_ZTV9CoolClass+16

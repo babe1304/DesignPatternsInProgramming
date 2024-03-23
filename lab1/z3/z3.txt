@@ -1,0 +1,12 @@
+Ispisivanjem memorijskih zahtjeva objekata zadanih dvaju tipova PlainOldClass i CoolClass
+može se uočiti razlika u zauzimanju memorijskog prostora za pojedini tip.
+Dok PlainOldClass zauzima samo 4B, CoolClass zauzima njih 16B.
+
+PlainOldClass sadrži samo jedan podatkovni član (int x_), veličina memorijskog
+prostora kojeg zauzima jedan član int je 4B.
+
+CoolClass osim podatkovnog člana (int x_) sadrži pokazivač na tablicu virtualnih funkcija.
+Veličina pokazivača unutar 64-bitnog sustava je jednaka 8B. Tako CoolClass uz 4B prostora 
+za član tipa int još zauzima i 8B prostora zauzetog za pokazivač. Preostalih 4B zauzetog 
+prostora nastalo je nadopunjavanjem člana int x_, s obzirom da sljedeći član u objektu 
+prostorno veći od njega.
